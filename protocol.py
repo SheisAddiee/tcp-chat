@@ -22,6 +22,15 @@ DELIMITER = b"\n"
 MAX_FRAME_BYTES = 16 * 1024   # reject anything larger (protects server memory)
 RECV_CHUNK = 4096
 
+# --- Protocol Message Types ---
+MSG_JOIN = "join"
+MSG_CHAT = "msg"
+MSG_DIRECT = "direct_message"
+MSG_PING = "ping"
+MSG_PONG = "pong"
+MSG_ERROR = "error"
+MSG_SYSTEM = "system"
+
 
 class ProtocolError(Exception):
     """A single frame was malformed. The stream itself is still usable."""
@@ -37,6 +46,29 @@ def encode(message: dict) -> bytes:
     if len(data) > MAX_FRAME_BYTES:
         raise ProtocolError("message too large")
     return data + DELIMITER
+
+
+# --- Message Builder Helpers ---
+def make_join(username: str) -> dict:
+    return {"type": MSG_JOIN, "username": username}
+
+def make_chat(body: str) -> dict:
+    return {"type": MSG_CHAT, "body": body}
+
+def make_direct(to_user: str, body: str) -> dict:
+    return {"type": MSG_DIRECT, "to": to_user, "body": body}
+
+def make_ping() -> dict:
+    return {"type": MSG_PING}
+
+def make_pong() -> dict:
+    return {"type": MSG_PONG}
+
+def make_system(body: str) -> dict:
+    return {"type": MSG_SYSTEM, "body": body}
+
+def make_error(body: str) -> dict:
+    return {"type": MSG_ERROR, "body": body}
 
 
 class FrameReader:
