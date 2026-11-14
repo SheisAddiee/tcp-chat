@@ -1,0 +1,22 @@
+[Unit]
+Description=CSC 423 TCP chat server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=chat
+WorkingDirectory=/opt/tcp-chat
+EnvironmentFile=-/opt/tcp-chat/.env
+ExecStart=/usr/bin/python3 -u /opt/tcp-chat/server.py
+Restart=on-failure
+RestartSec=3
+# Basic hardening: the service cannot write outside its own folder
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/tcp-chat
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

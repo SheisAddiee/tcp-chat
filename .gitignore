@@ -1,0 +1,15 @@
+.env
+*.pem
+*.key
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.log
+.DS_Store
+# Packet captures ARE submitted: keep them in captures/ (check contents first).
+# Ignore stray captures anywhere else.
+*.pcap
+*.pcapng
+!captures/*.pcap
+!captures/*.pcapng

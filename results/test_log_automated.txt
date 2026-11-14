@@ -1,0 +1,43 @@
+test_abrupt_disconnect_is_detected (test_chat.ChatServerTests.test_abrupt_disconnect_is_detected)
+Client closes the socket without sending 'leave' (like a crash). ... ok
+test_duplicate_username_rejected_case_insensitive (test_chat.ChatServerTests.test_duplicate_username_rejected_case_insensitive) ... Rejected 127.0.0.1:57852 - Username 'ALICE' is already in use
+ok
+test_empty_and_too_long_messages_rejected (test_chat.ChatServerTests.test_empty_and_too_long_messages_rejected) ... ok
+test_graceful_leave_is_announced (test_chat.ChatServerTests.test_graceful_leave_is_announced) ... ok
+test_group_message_reaches_everyone (test_chat.ChatServerTests.test_group_message_reaches_everyone) ... ok
+test_idle_client_times_out (test_chat.ChatServerTests.test_idle_client_times_out) ... ok
+test_invalid_json_gets_error_and_connection_survives (test_chat.ChatServerTests.test_invalid_json_gets_error_and_connection_survives) ... alice@127.0.0.1:35770 sent a malformed message: invalid JSON
+ok
+test_invalid_username_rejected (test_chat.ChatServerTests.test_invalid_username_rejected) ... Rejected 127.0.0.1:47192 - Username must be 2-20 letters, digits or _
+ok
+test_join_is_announced_to_others (test_chat.ChatServerTests.test_join_is_announced_to_others) ... ok
+test_join_returns_online_users (test_chat.ChatServerTests.test_join_returns_online_users) ... ok
+test_many_concurrent_clients (test_chat.ChatServerTests.test_many_concurrent_clients) ... ok
+test_message_split_across_several_tcp_segments (test_chat.ChatServerTests.test_message_split_across_several_tcp_segments)
+One message delivered in pieces must be reassembled. ... ok
+test_must_join_first (test_chat.ChatServerTests.test_must_join_first) ... Rejected 127.0.0.1:33252 - First message must be a join
+ok
+test_newline_inside_text_does_not_break_framing (test_chat.ChatServerTests.test_newline_inside_text_does_not_break_framing) ... ok
+test_other_malformed_inputs_do_not_crash_server (test_chat.ChatServerTests.test_other_malformed_inputs_do_not_crash_server) ... alice@127.0.0.1:59682 sent a malformed message: message must be a JSON object with a 'type' field
+alice@127.0.0.1:59682 sent a malformed message: message must be a JSON object with a 'type' field
+alice@127.0.0.1:59682 sent a malformed message: message must be a JSON object with a 'type' field
+alice@127.0.0.1:59682 sent a malformed message: invalid JSON
+ok
+test_oversized_frame_disconnects (test_chat.ChatServerTests.test_oversized_frame_disconnects) ... alice@127.0.0.1:54962 exceeded the frame size limit
+ok
+test_ping_pong (test_chat.ChatServerTests.test_ping_pong) ... ok
+test_private_message_only_reaches_target (test_chat.ChatServerTests.test_private_message_only_reaches_target) ... ok
+test_private_to_unknown_user (test_chat.ChatServerTests.test_private_to_unknown_user) ... ok
+test_rate_limit (test_chat.ChatServerTests.test_rate_limit) ... ok
+test_reconnect_while_three_clients_stay_connected (test_chat.ChatServerTests.test_reconnect_while_three_clients_stay_connected)
+Brief requirement: >= 3 simultaneous clients, one reconnects while others stay. ... ok
+test_server_shutdown_notifies_clients (test_chat.ChatServerTests.test_server_shutdown_notifies_clients) ... ok
+test_several_messages_in_one_send (test_chat.ChatServerTests.test_several_messages_in_one_send)
+Several messages arriving in one recv() must be separated. ... ok
+test_username_reusable_after_disconnect (test_chat.ChatServerTests.test_username_reusable_after_disconnect) ... ok
+test_users_command (test_chat.ChatServerTests.test_users_command) ... ok
+
+----------------------------------------------------------------------
+Ran 25 tests in 25.324s
+
+OK
