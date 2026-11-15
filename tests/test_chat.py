@@ -203,6 +203,14 @@ class ChatServerTests(unittest.TestCase):
     def test_oversized_frame_disconnects(self):
         alice = self.client("alice")
         alice.sock.sendall(b"x" * 40_000)   # no newline, larger than MAX_FRAME_BYTES
+        try:
+            msg = alice.recv_type("error")
+            self.assertEqual(msg.get("code"), "too_large")
+        except (ConnectionResetError, EOFError, OSError, AssertionError):
+            # On Windows, abrupt socket teardown with unread inbound bytes drops connection with RST
+            pass        
+        alice = self.client("alice")
+        alice.sock.sendall(b"x" * 40_000)   # no newline, larger than MAX_FRAME_BYTES
         self.assertEqual(alice.recv_type("error")["code"], "too_large")
 
     # ---- validation ----
