@@ -11,7 +11,7 @@ This guide covers the four compulsory TCP experiments and the TCP vs UDP compari
 
 ## Where each command runs
 
-- Commands with `sudo`, `tcpdump`, `netem.sh` or `python3` run **on the EC2 VM**. From Windows, open PowerShell and connect with `ssh -i .\key.pem ubuntu@<PUBLIC_IP>`; you can open several PowerShell windows for several SSH sessions ("terminal 1, 2, 3").
+- Commands with `sudo`, `tcpdump`, `netem.sh` or `python3` run **on the Azure VM**. From Windows, open PowerShell and connect with `ssh -i <your-key>.pem azureuser@102.37.218.84`. You can open several PowerShell windows for several SSH sessions ("terminal 1, 2, 3").
 - Commands marked **laptop** run in PowerShell on Windows, using `python` instead of `python3` and `\` in paths.
 - Wireshark runs on the laptop. It opens the `.pcap` files you download from the VM.
 
@@ -23,9 +23,9 @@ cd ~/tcp-chat           # the project folder you copied/cloned
 mkdir -p captures results
 ```
 
-To download captures to your laptop for Wireshark:
-```bash
-scp -i key.pem ubuntu@<PUBLIC_IP>:~/tcp-chat/captures/*.pcap ./captures/
+To download captures to your laptop for Wireshark (PowerShell):
+```powershell
+scp -i <your-key>.pem "azureuser@102.37.218.84:~/tcp-chat/*.pcap" .\captures\
 ```
 
 Useful Wireshark settings:
@@ -42,7 +42,7 @@ Useful Wireshark settings:
 Use the real cloud connection, so the capture shows public IPs.
 
 1. On your **laptop**, start Wireshark on your Wi-Fi/Ethernet interface with the capture filter `tcp port 5000`.
-2. Connect: `python client.py --host <PUBLIC_IP> --port 5000 --username alice`
+2. Connect: `python client.py --host 102.37.218.84 --port 5000 --username alice`
 3. Send one message, then type `/quit`.
 4. Stop and save the capture as `captures/exp1_handshake.pcapng`.
 
@@ -119,7 +119,7 @@ From your laptop, run these one at a time:
 |---|---|---|---|
 | A. Normal | client, then `/quit` | `leave` message, FIN/ACK in both directions | `alice left` |
 | B. Process killed | client, then close its PowerShell window (or Task Manager → End task) | The OS usually still sends FIN, since the kernel closes the socket. Windows may send RST instead, which is worth noting if you see it | `connection closed` (or `connection reset`) |
-| C. Abort (RST) | `python experiments/tcp_bench.py abort --host <PUBLIC_IP>` | RST, no FIN | `connection reset` |
+| C. Abort (RST) | `python experiments/tcp_bench.py abort --host 102.37.218.84` | RST, no FIN | `connection reset` |
 | D. Network lost (optional) | client, then turn Wi-Fi off for 70 s | Nothing; later the server's keepalive/idle timeout fires | `timed out` |
 
 **Display filter:** `tcp.flags.fin == 1 || tcp.flags.reset == 1`
@@ -144,7 +144,7 @@ From your laptop, run these one at a time:
 # Condition 1: same machine (on the VM)
 python3 experiments/tcp_bench.py rtt --host 127.0.0.1 --port 5000 --count 50
 # Condition 2: over the internet (from your laptop)
-python experiments/tcp_bench.py rtt --host <PUBLIC_IP> --port 5000 --count 50
+python experiments/tcp_bench.py rtt --host 102.37.218.84 --port 5000 --count 50
 ```
 Optional third condition on the VM: `sudo bash experiments/netem.sh delay 50`, run again, then `netem.sh off`.
 
